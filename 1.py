@@ -957,14 +957,12 @@ async def show_help_menu(client, event):
 
 async def show_status(client, event):
     """Show enhanced bot status with detailed information"""
-    global start_time
-
     try:
         # Measure ping
-        start_time = time.time()
+        start_time_ping = time.time()  # Renamed to avoid confusion with global start_time
         await client(functions.PingRequest(ping_id=0))
         end_time = time.time()
-        ping = round((end_time - start_time) * 1000, 2)
+        ping = round((end_time - start_time_ping) * 1000, 2)
 
         # Get time information
         config = load_config()
@@ -976,9 +974,8 @@ async def show_status(client, event):
         jalali_date = j_date.strftime('%Y/%m/%d')
         local_time = now.strftime('%H:%M:%S')
 
-        # Calculate uptime
-        uptime_seconds = int(time.time() - start_time)
-        global start_time
+        # Calculate uptime using global start_time
+        uptime_seconds = int(time.time() - start_time)  # No need for global declaration if only reading
         uptime = str(timedelta(seconds=uptime_seconds))
 
         # Memory usage
